@@ -126,14 +126,7 @@ export default class LoginForm extends React.Component {
             this.setState({
                 loading: true
             });
-            Alert.alert(
-                'Edasdarro',
-                this.state.user.telefone,
-                [
-                    {text: 'OK'},
-                ],
-                {cancelable: false}
-            );
+
             LoginService.signin(this.state.user).then((response) => {
 
                 // Verifica o tipo de erro para colocar os avisos
@@ -157,18 +150,11 @@ export default class LoginForm extends React.Component {
                     loading: false
                 });
 
-                Alert.alert(
-                    'teste',
-                    response.data,
-                    [
-                        {text: 'OK'},
-                    ],
-                    {cancelable: false}
-                );
-                if (response.data.success) {
+                if (response.data.success !== false) {
 
+                    console.log(response.data)
 
-                    this.props.callbackLogin('Explorer');
+                    this.props.callbackLogin('Main');
                     this.setState({
                         loading: false
                     });

@@ -4,11 +4,12 @@ import {
     Text,
     TouchableOpacity,
     Dimensions,
-    TextInput,
+    TextInput, Alert,
 
 } from 'react-native';
 import {styleCadastro} from '../Cadastro-styles'
 import {style} from '../../../../slides/SlideScreen-styles';
+import LoginService from "../../../../../services/login/login-service";
 
 
 export default class Passo1 extends React.Component {
@@ -19,17 +20,17 @@ export default class Passo1 extends React.Component {
         let {height} = Dimensions.get('window');
         super(props);
         let user = {
-            user_nome: '',
-            user_email: '',
-            user_telefone: '',
-            user_senha: '',
+            nome: '',
+            email: '',
+            telefone: '',
+            senha: '',
         };
 
         let error = {
-            user_nome: '',
-            user_email: '',
-            user_telefone: '',
-            user_senha: '',
+            nome: '',
+            email: '',
+            telefone: '',
+            senha: '',
         };
 
         this.state = {
@@ -56,69 +57,70 @@ export default class Passo1 extends React.Component {
                 
                 <View style={styleCadastro.inputContainer}>
                     <TextInput
-                        style={[styleCadastro.inputCadastro, (this.state.error.user_nome !== '' ? styleCadastro.inputError : null)]}
+                        style={[styleCadastro.inputCadastro, (this.state.error.nome !== '' ? styleCadastro.inputError : null)]}
                         maxLength={30}
                         onChangeText={(text) => {
-                            this.state.user.user_nome = text;
-                            this.state.error.user_nome = '';
+                            this.state.user.nome = text;
+                            this.state.error.nome = '';
                             this.setState({error: this.state.error});
                         }}
                         underlineColorAndroid='#FFF'
                         placeholder="Nome Completo"
                         placeholderTextColor="#a0a7ad"
                     />
-                    <Text style={[styleCadastro.errorLabel]}>{this.state.error.user_nome}</Text>
+                    <Text style={[styleCadastro.errorLabel]}>{this.state.error.nome}</Text>
                 </View>
 
                 
                 <View style={styleCadastro.inputContainer}>
                     <TextInput
-                        style={[styleCadastro.inputCadastro, (this.state.error.user_email !== '' ? styleCadastro.inputError : null)]}
+                        style={[styleCadastro.inputCadastro, (this.state.error.email !== '' ? styleCadastro.inputError : null)]}
                         maxLength={30}
                         onChangeText={(text) => {
-                            this.state.user.user_email = text;
-                            this.state.error.user_email = '';
+                            this.state.user.email = text;
+                            this.state.error.email = '';
                             this.setState({error: this.state.error});
                         }}
                         underlineColorAndroid='#FFF'
                         placeholder="E-mail"
                         placeholderTextColor="#a0a7ad"
                     />
-                    <Text style={[styleCadastro.errorLabel]}>{this.state.error.user_email}</Text>
+                    <Text style={[styleCadastro.errorLabel]}>{this.state.error.email}</Text>
                 </View>
 
                 
                 <View style={styleCadastro.inputContainer}>
                     <TextInput
-                        style={[styleCadastro.inputCadastro, (this.state.error.user_telefone !== '' ? styleCadastro.inputError : null)]}
+                        style={[styleCadastro.inputCadastro, (this.state.error.telefone !== '' ? styleCadastro.inputError : null)]}
                         maxLength={30}
                         onChangeText={(text) => {
-                            this.state.user.user_telefone = text;
-                            this.state.error.user_telefone = '';
+                            this.state.user.telefone = text;
+                            this.state.error.telefone = '';
                             this.setState({error: this.state.error});
                         }}
                         underlineColorAndroid='#FFF'
                         placeholder="Telefone"
                         placeholderTextColor="#a0a7ad"
                     />
-                    <Text style={[styleCadastro.errorLabel]}>{this.state.error.user_telefone}</Text>
+                    <Text style={[styleCadastro.errorLabel]}>{this.state.error.telefone}</Text>
                 </View>
 
                 
                 <View style={styleCadastro.inputContainer}>
                     <TextInput
-                        style={[styleCadastro.inputCadastro, (this.state.error.user_senha !== '' ? styleCadastro.inputError : null)]}
+                        style={[styleCadastro.inputCadastro, (this.state.error.senha !== '' ? styleCadastro.inputError : null)]}
                         maxLength={30}
+                        secureTextEntry={true}
                         onChangeText={(text) => {
-                            this.state.user.user_senha = text;
-                            this.state.error.user_senha = '';
+                            this.state.user.senha = text;
+                            this.state.error.senha = '';
                             this.setState({error: this.state.error});
                         }}
                         underlineColorAndroid='#FFF'
                         placeholder="Senha"
                         placeholderTextColor="#a0a7ad"
                     />
-                    <Text style={[styleCadastro.errorLabel]}>{this.state.error.user_senha}</Text>
+                    <Text style={[styleCadastro.errorLabel]}>{this.state.error.senha}</Text>
                 </View>
 
                 
@@ -143,6 +145,38 @@ export default class Passo1 extends React.Component {
 
     cadastrar() {
 
+        this.setState({
+            loading: true
+        });
+
+        LoginService.cadastrar(this.state.user).then((response) => {
+
+            if (response.data !== false) {
+
+                console.log(response.data)
+
+                this.props.navigation.navigate('Main');
+                this.setState({
+                    loading: false
+                });
+            }
+
+        }).catch(error => {
+
+            this.setState({
+                loading: false
+            });
+
+            Alert.alert(
+                'Erro',
+                'Ocorreu um erro ao se comunicar com o servidor. Por favor, tente novamente mais tarde.' + error,
+                [
+                    {text: 'OK'},
+                ],
+                {cancelable: false}
+            );
+
+        });
     }
 
 

@@ -8,4 +8,4 @@ export const API_CURRENT = "localhost";
 export const API_URL = api_list[ENVIRONMENT_CURRENT][API_CURRENT];
 
 //A url com /starriad/controller
-export const API_URL_HOUPA = API_URL;
+export const API_URL_STAR = API_URL;
