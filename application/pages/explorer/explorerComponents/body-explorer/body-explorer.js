@@ -1,6 +1,17 @@
 import React from 'react';
-import {View, Image, ScrollView, Text, TouchableOpacity, ActivityIndicator, Modal, Dimensions} from 'react-native';
+import {
+    View,
+    Image,
+    ScrollView,
+    Text,
+    TouchableOpacity,
+    ActivityIndicator,
+    Modal,
+    Dimensions,
+    Alert
+} from 'react-native';
 import styles from './body-explorer-styles';
+import LoginService from "../../../../services/login/login-service";
 
 export default class BodyExplorer extends React.Component {
 
@@ -23,8 +34,27 @@ export default class BodyExplorer extends React.Component {
     }
 
     componentDidMount(){
-        this.setState({
-            campanhas:[]
+        LoginService.campanha().then((response) => {
+
+            this.setState({empresaProdutos: response.data})
+
+            console.log(this.state.empresaProdutos)
+
+        }).catch(error => {
+
+            this.setState({
+                loading: false
+            });
+
+            Alert.alert(
+                'Erro',
+                'Ocorreu um erro ao se comunicar com o servidor. Por favor, tente novamente mais tarde.' + error,
+                [
+                    {text: 'OK'},
+                ],
+                {cancelable: false}
+            );
+
         });
     }
 
@@ -48,12 +78,13 @@ export default class BodyExplorer extends React.Component {
     }
 
     renderEmpresasProdutos(){
-                {this.state.campanhas.map(empresas => (
+        return this.state.empresaProdutos.map(empresas => (
+
                     <View key={empresas.categorias}>
                         <View style={styles.headerBodyExplorer}>
                             <TouchableOpacity activeOpacity={0.6} style={styles.headerInfoMarca}>
                                 {/*<View style={styles.headerImageMarca}>*/}
-                                    {/*<Image style={styles.imageMarca} key={empresas.imgProfile} source={{uri: empresas.imgProfile}} />*/}
+                                {/*<Image style={styles.imageMarca} key={empresas.imgProfile} source={{uri: empresas.imgProfile}} />*/}
                                 {/*</View>*/}
 
                                 <View style={styles.headerNomeMarca}>
@@ -64,24 +95,24 @@ export default class BodyExplorer extends React.Component {
                             </TouchableOpacity>
 
                             {/*<View style={styles.headerInfoButtons}>*/}
-                                {/*<TouchableOpacity activeOpacity={0.6} style={styles.headerBtnLoja} onPress={() => this.openProfile(empresas.id)}>*/}
-                                    {/*<Text style={styles.headerLabelBtnLoja}>*/}
-                                        {/*VISITAR LOJA*/}
-                                    {/*</Text>*/}
-                                {/*</TouchableOpacity>*/}
+                            {/*<TouchableOpacity activeOpacity={0.6} style={styles.headerBtnLoja} onPress={() => this.openProfile(empresas.id)}>*/}
+                            {/*<Text style={styles.headerLabelBtnLoja}>*/}
+                            {/*VISITAR LOJA*/}
+                            {/*</Text>*/}
+                            {/*</TouchableOpacity>*/}
 
-                                {/*<TouchableOpacity activeOpacity={0.6} style={styles.headerBtnConexoes} onPress={()=> this.conexao(empresas.id)}>*/}
+                            {/*<TouchableOpacity activeOpacity={0.6} style={styles.headerBtnConexoes} onPress={()=> this.conexao(empresas.id)}>*/}
 
-                                    {/*{ !this.state.loading &&*/}
-                                    {/*<Text style={styles.headeLabelBtnConexoes}>*/}
-                                        {/*CONECTAR*/}
-                                    {/*</Text>*/}
-                                    {/*}*/}
-                                    {/*{*/}
-                                        {/*this.state.loading &&*/}
-                                        {/*<ActivityIndicator size="small" color="#fff" />*/}
-                                    {/*}*/}
-                                {/*</TouchableOpacity>*/}
+                            {/*{ !this.state.loading &&*/}
+                            {/*<Text style={styles.headeLabelBtnConexoes}>*/}
+                            {/*CONECTAR*/}
+                            {/*</Text>*/}
+                            {/*}*/}
+                            {/*{*/}
+                            {/*this.state.loading &&*/}
+                            {/*<ActivityIndicator size="small" color="#fff" />*/}
+                            {/*}*/}
+                            {/*</TouchableOpacity>*/}
                             {/*</View>*/}
                         </View>
 
@@ -91,13 +122,13 @@ export default class BodyExplorer extends React.Component {
                                     <TouchableOpacity activeOpacity={0.9} key={produtos.id} style={styles.produtosContainer} onPress={() => {
                                         this.props.callBack('ProdutoProfile')
                                     }}>
-                                        <Image style={styles.produtosImg} source={{uri: produtos.imgProduto}} />
+                                        <Image style={styles.produtosImg} source={{uri: "https://d2mf6a0uls9pip.cloudfront.net/uploads/perfil/big/2018/10/24/5bd0a1120f720.jpeg"}} />
                                     </TouchableOpacity>
                                 ))}
                             </ScrollView>
                         </View>
                     </View>
-                ))}
+
         ))
     }
 
@@ -121,9 +152,8 @@ export default class BodyExplorer extends React.Component {
                             </TouchableOpacity>
 
 
-                            {this.state.empresaProdutos.map(empProd => (
-                                empProd.empresas.map(empresas => (
-                                    empresas.produtos.map(produtos => (
+                            {this.state.empresaProdutos.map(empresas => (
+                                    empresas.campanhas.map(produtos => (
 
                                         this.state.idEmpr == empresas.id && produtos.id == this.state.idProd &&
 
@@ -131,7 +161,7 @@ export default class BodyExplorer extends React.Component {
 
                                             <ScrollView pagingEnabled={true} horizontal={true} showsHorizontalScrollIndicator={false} style={{flex: 1, width: '100%', flexDirection: 'row'}}>
                                                 <View style={{height: 50, width: this.state.deviceWidth, backgroundColor: '#f3f3f3'}}>
-                                                    <Image resizeMode={'contain'} style={styles.produtosImg} source={{uri: produtos.imgProduto}} />
+                                                    <Image resizeMode={'contain'} style={styles.produtosImg} source={{uri: "https://d2mf6a0uls9pip.cloudfront.net/uploads/perfil/big/2018/10/24/5bd0a1120f720.jpeg"}} />
                                                 </View>
 
                                             </ScrollView>
@@ -139,7 +169,6 @@ export default class BodyExplorer extends React.Component {
 
                                         </View>
                                     ))
-                                ))
                             ))}
                         </View>
                     </ScrollView>

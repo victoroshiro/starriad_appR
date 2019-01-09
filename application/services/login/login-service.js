@@ -10,6 +10,9 @@ const LoginService = {
     cadastrar(data) {
         return axios.post(API_URL_STAR + 'users/cadastrarApp', data);
     },
+    campanha() {
+        return axios.post(API_URL_STAR + 'users/get_campanhas');
+    },
 
     checkUserRecoverService(data) {
         return axios.post(API_URL_STAR + 'login/check_user_recover', data);
