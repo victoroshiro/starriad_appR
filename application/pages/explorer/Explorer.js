@@ -6,6 +6,7 @@ import BodyExplorer from './explorerComponents/body-explorer/body-explorer';
 import SystemTabs from "../../components/tabs/SystemTabs";
 import SystemHeader from "../../components/SystemHeader/SystemHeader";
 import Template from "../../components/Template/Template";
+import { withNavigation } from 'react-navigation';
 
 export default class Explorer extends React.Component {
 
@@ -85,3 +86,4 @@ export default class Explorer extends React.Component {
     }
 
 }
+

@@ -21,7 +21,7 @@ export default createStackNavigator({
         },
     },
     {
-        initialRouteName: 'Main',
+        initialRouteName: 'Login',
 
         navigationOptions: {
             header: null

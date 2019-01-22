@@ -12,12 +12,12 @@ import {
 } from 'react-native';
 import styles from './body-explorer-styles';
 import LoginService from "../../../../services/login/login-service";
+import {withNavigation} from "react-navigation";
 
-export default class BodyExplorer extends React.Component {
+ class BodyExplorer extends React.Component {
 
     constructor(props){
         super(props);
-
         this.state = {
             empresaProdutos: [],
             loading: false,
@@ -120,9 +120,13 @@ export default class BodyExplorer extends React.Component {
                             <ScrollView style={styles.scrollProdutos} horizontal={true} showsHorizontalScrollIndicator={false}>
                                 {empresas.campanhas.map(produtos => (
                                     <TouchableOpacity activeOpacity={0.9} key={produtos.id} style={styles.produtosContainer} onPress={() => {
-                                        this.props.callBack('ProdutoProfile')
+                                        // this.props.callBack('ProdutoProfile', produtos)
+                                       // this.openVideo(produtos);
+                                        this.props.navigation.navigate('ProdutoProfile', {
+                                            video_id: produtos
+                                        });
                                     }}>
-                                        <Image style={styles.produtosImg} source={{uri: "https://d2mf6a0uls9pip.cloudfront.net/uploads/perfil/big/2018/10/24/5bd0a1120f720.jpeg"}} />
+                                        <Image style={styles.produtosImg} source={{uri: "http://ec2-18-231-116-5.sa-east-1.compute.amazonaws.com/StarriAD/uploads/" + produtos.nome_thumbnail}} />
                                     </TouchableOpacity>
                                 ))}
                             </ScrollView>
@@ -131,6 +135,11 @@ export default class BodyExplorer extends React.Component {
 
         ))
     }
+
+    openVideo = (campanha) => {
+        // this.props.navigation.navigate('ProdutoProfile');
+    }
+
 
     renderModalProdutos(){
         return (
@@ -189,3 +198,4 @@ export default class BodyExplorer extends React.Component {
         );
     }
 }
+export default withNavigation(BodyExplorer)
