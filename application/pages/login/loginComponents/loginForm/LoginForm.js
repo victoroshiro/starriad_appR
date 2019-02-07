@@ -152,9 +152,23 @@ export default class LoginForm extends React.Component {
 
                 if (response.data.success !== false) {
 
-                    console.log(response.data)
+                    // console.log(response.data)
 
-                    this.props.callbackLogin('Main');
+                    var _storeData = async () => {
+                        try {
+                            await AsyncStorage.setItem('@starriad:userdata', JSON.stringify(response.data)).then((value) => {
+                                console.log(value)
+
+                                this.props.callbackLogin('Main');
+                            });
+
+                        } catch (error) {
+                            console.log(error)
+                        }
+                    }
+
+                    _storeData()
+
                     this.setState({
                         loading: false
                     });

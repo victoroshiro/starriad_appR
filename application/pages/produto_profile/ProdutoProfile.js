@@ -1,9 +1,10 @@
 import React from 'react';
-import {View, Dimensions, TouchableOpacity, Text, ScrollView, Image, Alert} from 'react-native';
+import {View, Dimensions, TouchableOpacity, Text, ScrollView, Image, Alert, AsyncStorage} from 'react-native';
 import Video from 'react-native-video';
 import {withNavigation} from "react-navigation";
 import VideoPlayer from 'react-native-video-controls';
 import {styleLogin} from "../login/Login-styles";
+import LoginService from "../../services/login/login-service";
 
 class ProdutoProfile extends React.Component {
 
@@ -17,13 +18,33 @@ class ProdutoProfile extends React.Component {
             height: height,
             width: width,
             videoEnd: false,
-            pause: false
+            pause: false,
+            user_id: false
         }
 
         console.log(this.state.video_id)
+
+        this.checkLog()
+
     }
 
+    checkLog = async () => {
 
+        AsyncStorage.getItem('@starriad:userdata').then((value) => {
+
+            let user_logged = JSON.parse(value)
+
+            console.log(user_logged)
+
+            if(user_logged !== undefined && user_logged != null && user_logged !== '' && user_logged && user_logged.success !== false){
+
+                this.setState({user_id: user_logged.id[0].id})
+
+            }
+        }).done();
+
+
+    };
 
 
     render(){
@@ -139,15 +160,47 @@ class ProdutoProfile extends React.Component {
     }
 
     checkResposta= (resposta)=>{
+
         if(this.state.video_id.resposta_correta === resposta){
-            Alert.alert(
-                'Resposta correta',
-                'Parabens, você ganhou seu cupom',
-                [
-                    {text: 'OK',  onPress: () => {this.props.navigation.goBack();}},
-                ],
-                {cancelable: false}
-            );
+
+            let dataCupom = {
+                valor: this.state.video_id.valor_desconto,
+                empresa_id: parseInt(this.state.video_id.empresa_id),
+                status: 1,
+                user_id: parseInt(this.state.user_id)
+            }
+
+            LoginService.createCupom(dataCupom).then(() => {
+
+                Alert.alert(
+                    'Resposta correta',
+                    'Parabens, você ganhou seu cupom',
+                    [
+                        {text: 'OK',  onPress: () => {this.props.navigation.goBack();}},
+                    ],
+                    {cancelable: false}
+                );
+
+            }).catch(error => {
+
+                this.setState({
+                    loading: false
+                });
+
+                console.log(error)
+
+                Alert.alert(
+                    'Erro',
+                    'Ocorreu um erro ao se comunicar com o servidor. Por favor, tente novamente mais tarde.' ,
+                    [
+                        {text: 'OK'},
+                    ],
+                    {cancelable: false}
+                );
+
+            });
+
+
 
         }else{
 

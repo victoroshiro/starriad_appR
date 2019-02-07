@@ -13,7 +13,9 @@ const LoginService = {
     campanha() {
         return axios.post(API_URL_STAR + 'users/get_campanhas');
     },
-
+    createCupom(data) {
+        return axios.post(API_URL_STAR + 'users/createCupom', data);
+    },
     checkUserRecoverService(data) {
         return axios.post(API_URL_STAR + 'login/check_user_recover', data);
     },

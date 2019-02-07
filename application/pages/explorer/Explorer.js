@@ -1,5 +1,5 @@
 import React from 'react';
-import {ActivityIndicator, ScrollView, View, RefreshControl} from 'react-native';
+import {ActivityIndicator, ScrollView, View, RefreshControl, AsyncStorage} from 'react-native';
 import styles from './Explorer-styles';
 import TopExplorer from './explorerComponents/top-explorer/top-explorer';
 import BodyExplorer from './explorerComponents/body-explorer/body-explorer';
@@ -18,7 +18,28 @@ export default class Explorer extends React.Component {
             error: false,
             refreshing: false,
         };
+
+        this.checkLog()
+
     }
+
+    checkLog = async () => {
+
+        AsyncStorage.getItem('@starriad:userdata').then((value) => {
+
+            let user_logged = JSON.parse(value)
+
+            console.log(user_logged);
+
+            if(user_logged !== undefined && user_logged != null && user_logged !== '' && user_logged && user_logged.success !== false){
+                // this.props.callbackLogin('Main');
+                // this.props.navigation.navigate('Main');
+            }
+        }).done();
+
+
+    };
+
 
     // Faz o refresh da pagina
     _onRefresh = () => {
