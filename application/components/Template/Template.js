@@ -14,8 +14,8 @@ export default class Template extends React.Component{
         this.state = {
             scrollview: ( this.props.scrollview !== undefined ? this.props.scrollview : true ),
             header: ( this.props.header !== undefined ? this.props.header : true ),
-            footer: ( this.props.footer !== undefined ? this.props.footer : true ),
-
+            // footer: ( this.props.footer !== undefined ? this.props.footer : true ),
+            footer: false,
             animate_settings: new Animated.Value( 0 ),
             animate_menu: new Animated.Value( 0 ),
 

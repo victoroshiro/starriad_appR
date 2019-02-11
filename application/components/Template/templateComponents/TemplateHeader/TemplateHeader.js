@@ -51,7 +51,7 @@ class TemplateHeader extends React.Component {
 
     componentDidMount(){
         this.getUidUser();
-        this.loadDadosUser(this.state.paramsFire);
+        // this.loadDadosUser(this.state.paramsFire);
     }
 
     getUidUser = async () => {
@@ -62,23 +62,23 @@ class TemplateHeader extends React.Component {
     };
 
     // Pega o UID do usuario, seta no storage e retorna os campos( empresa_id_fk, name, name_profile, notificationsTokens, online ) do Firestore.
-    loadDadosUser = async (paramsFire) => {
-
-        const user_logged = await AsyncStorage.getItem('@starriad:userlogged');
-
-        if (user_logged !== undefined && user_logged != null && user_logged !== '' && user_logged) {
-
-            paramsFire.uid = this.state.uid_user;
-
-            this.setState({
-                paramsFire: this.state.paramsFire
-            });
-
-
-        }else{
-            console.log('ELSE');
-        }
-    };
+    // loadDadosUser = async (paramsFire) => {
+    //
+    //     const user_logged = await AsyncStorage.getItem('@starriad:userlogged');
+    //
+    //     if (user_logged !== undefined && user_logged != null && user_logged !== '' && user_logged) {
+    //
+    //         paramsFire.uid = this.state.uid_user;
+    //
+    //         this.setState({
+    //             paramsFire: this.state.paramsFire
+    //         });
+    //
+    //
+    //     }else{
+    //         console.log('ELSE');
+    //     }
+    // };
 
     getActivitiesFirestore = async (user) =>{
         const user_logged = await AsyncStorage.getItem('@starriad:userlogged');
@@ -245,9 +245,7 @@ class TemplateHeader extends React.Component {
                         display: 'flex',
                         alignItems: 'center',
                     marginRight: 20}]}>
-                        <TouchableOpacity  onPress={() => {
-                            // this.props.navigation.navigate('Notificacoes');
-                        }}
+                        <TouchableOpacity  onPress={()=>{ this.props.navigation.navigate('ticketList'); }}
                             style={[ {
                                 width: 80,
                                 height: 50,
@@ -318,10 +316,9 @@ class TemplateHeader extends React.Component {
                 <View style={[ styles.template_header_menu_content ]}>
 
                     <View style={[ styles.template_header_menu_head ]}>
-                        <TextInput
-                            style={[ styles.template_header_menu_header_searcher ]}
-                            placeholder="Busca"
-                            underlineColorAndroid="transparent"/>
+                        <TouchableOpacity onPress={()=>{this.props.navigation.navigate('busca')}}>
+                        <Text style={{border: 2, textAlign: "center"}}>Busca</Text>
+                        </TouchableOpacity>
                     </View>
 
                     <View style={[ styles.template_header_menu_options ]}>
@@ -336,35 +333,55 @@ class TemplateHeader extends React.Component {
                                 </TouchableOpacity>
                             </View>
 
-                            <View style={[ styles.template_header_menu_option ]}>
-                                <View style={[ styles.template_header_menu_option_label ]}>
-                                    <TouchableOpacity
-                                        onPress={() => { this.setState({ menu_brands: !this.state.menu_brands }) }}
-                                        style={[ styles.template_header_menu_option_touchable ]}>
-                                        <Text style={[ styles.template_header_menu_option_text ]}>
-                                            Categorias
-                                        </Text>
-                                        <View style={[ styles.template_header_menu_option_icon ]}>
-                                            <Image
-                                                style={[ styles.template_header_menu_option_ico, { transform: [{ rotate: (this.state.menu_brands ? '90deg' : '0deg' ) }] } ]}
-                                                source={ require('../../../../assets/imgs/png/icons/caret-right.png') }/>
-                                        </View>
-                                    </TouchableOpacity>
-                                </View>
-                                <View style={[ styles.template_header_submenu_options, { maxHeight: ( this.state.menu_brands ? 400 : 0 ) } ]}>
-                                    <ScrollView style={[ styles.template_header_submenu_scrollview ]}>
-                                        <View style={[ styles.template_header_submenu_view ]}>
+                            {/*<View style={[ styles.template_header_menu_option ]}>*/}
+                                {/*<View style={[ styles.template_header_menu_option_label ]}>*/}
+                                    {/*<TouchableOpacity*/}
+                                        {/*onPress={() => { this.setState({ menu_brands: !this.state.menu_brands }) }}*/}
+                                        {/*style={[ styles.template_header_menu_option_touchable ]}>*/}
+                                        {/*<Text style={[ styles.template_header_menu_option_text ]}>*/}
+                                            {/*Categorias*/}
+                                        {/*</Text>*/}
+                                        {/*<View style={[ styles.template_header_menu_option_icon ]}>*/}
+                                            {/*<Image*/}
+                                                {/*style={[ styles.template_header_menu_option_ico, { transform: [{ rotate: (this.state.menu_brands ? '90deg' : '0deg' ) }] } ]}*/}
+                                                {/*source={ require('../../../../assets/imgs/png/icons/caret-right.png') }/>*/}
+                                        {/*</View>*/}
+                                    {/*</TouchableOpacity>*/}
+                                {/*</View>*/}
+                                {/*<View style={[ styles.template_header_submenu_options, { maxHeight: ( this.state.menu_brands ? 400 : 0 ) } ]}>*/}
+                                    {/*<ScrollView style={[ styles.template_header_submenu_scrollview ]}>*/}
+                                        {/*<View style={[ styles.template_header_submenu_view ]}>*/}
 
-                                            { this.__render_brands() }
+                                            {/*{ this.__render_brands() }*/}
 
-                                        </View>
-                                    </ScrollView>
-                                </View>
-                            </View>
+                                        {/*</View>*/}
+                                    {/*</ScrollView>*/}
+                                {/*</View>*/}
+                            {/*</View>*/}
+                            {/*<View style={[ styles.template_header_menu_option ]}>*/}
+                                {/*<TouchableOpacity style={[ styles.template_header_menu_option_touchable ]}>*/}
+                                    {/*<Text style={[ styles.template_header_menu_option_text ]}>*/}
+                                        {/*Configurações*/}
+                                    {/*</Text>*/}
+                                {/*</TouchableOpacity>*/}
+                            {/*</View>*/}
                             <View style={[ styles.template_header_menu_option ]}>
-                                <TouchableOpacity style={[ styles.template_header_menu_option_touchable ]}>
+                                <TouchableOpacity style={[ styles.template_header_menu_option_touchable ]} onPress={()=>{
+                                    var run = async () => {
+                                        try {
+                                            await AsyncStorage.clear().then((value) => {
+
+                                                this.props.navigation.navigate('Login');
+                                            });
+
+                                        } catch (error) {
+                                            console.log(error)
+                                        }
+                                    }
+                                    run()
+                                }}>
                                     <Text style={[ styles.template_header_menu_option_text ]}>
-                                        Configurações
+                                        Sair
                                     </Text>
                                 </TouchableOpacity>
                             </View>
@@ -380,7 +397,6 @@ class TemplateHeader extends React.Component {
         );/* Fim do escopo da renderização do modulo */
 
     });/* fim do escopo da função __render_header_settings */
-
 
     /** Função utilizada para renderizar os registros de marcas do submenu */
     __render_brands = (()=>{

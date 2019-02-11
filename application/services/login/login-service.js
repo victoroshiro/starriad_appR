@@ -10,7 +10,12 @@ const LoginService = {
     cadastrar(data) {
         return axios.post(API_URL_STAR + 'users/cadastrarApp', data);
     },
-
+    campanha() {
+        return axios.post(API_URL_STAR + 'users/get_campanhas');
+    },
+    createCupom(data) {
+        return axios.post(API_URL_STAR + 'users/createCupom', data);
+    },
     checkUserRecoverService(data) {
         return axios.post(API_URL_STAR + 'login/check_user_recover', data);
     },
@@ -26,7 +31,15 @@ const LoginService = {
     recoverPasswordService(data) {
         return axios.post(API_URL_STAR + 'login/recover_password', data);
     },
-
+    getCupons(data) {
+        return axios.post(API_URL_STAR + 'users/get_tickets', data);
+    },
+    useCupons(data) {
+        return axios.post(API_URL_STAR + 'users/use_tickets', data);
+    },
+    pesquisarVideo(data) {
+        return axios.post(API_URL_STAR + 'users/pesquisarVideo', data);
+    },
     signout(){
         return axios.post(API_URL_STAR + 'routes/signout');
     }

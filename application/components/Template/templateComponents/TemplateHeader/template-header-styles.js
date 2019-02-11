@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
         height: 24,
         position: 'relative',
         display: 'flex',
-        backgroundColor: '#7f1cef',
+        backgroundColor: '#002f49',
     },
 
     template_header_viewport: {

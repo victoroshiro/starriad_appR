@@ -3,8 +3,8 @@
 
 export const api_list = {
     development: {
-        localhost: 'http://192.168.15.41/StarriAD/',
-        ec2: 'http://ec2-18-231-44-81.sa-east-1.compute.amazonaws.com/StarriAD/',
+        localhost: 'http://192.168.0.14/StarriAD/',
+        ec2: 'http://ec2-18-231-116-5.sa-east-1.compute.amazonaws.com/StarriAD/',
         production: 'http://ws.starriad.com.br/'
     },
 };

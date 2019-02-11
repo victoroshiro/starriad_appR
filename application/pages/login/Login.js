@@ -6,6 +6,7 @@ import {
     Image,
     ImageBackground,
     Dimensions,
+    AsyncStorage,
     KeyboardAvoidingView
 } from 'react-native';
 import {styleLogin} from './Login-styles';
@@ -27,7 +28,24 @@ export default class Login extends React.Component {
 
         };
 
+        this.checkLog()
+
     }
+
+    checkLog = async () => {
+
+        AsyncStorage.getItem('@starriad:userdata').then((value) => {
+
+            let user_logged = JSON.parse(value)
+
+            if(user_logged !== undefined && user_logged != null && user_logged !== '' && user_logged && user_logged.success !== false){
+                // this.props.callbackLogin('Main');
+                this.props.navigation.navigate('Main');
+            }
+        }).done();
+
+
+    };
 
     render() {
         return (
@@ -120,10 +138,10 @@ export default class Login extends React.Component {
             case 'Passo2':
                 return (<Passo2 callback={this.getResponse.bind(this)} callbackLogin={this.doLogin.bind(this)} params={this.state.params}/>);
                 break;
-
-            case 'RecuperarSenha':
-                return (<RecuperarSenha callback={this.getResponse.bind(this)} callbackLogin={this.doLogin.bind(this)} params={this.state.params} />);
-                break;
+            //
+            // case 'RecuperarSenha':
+            //     return (<RecuperarSenha callback={this.getResponse.bind(this)} callbackLogin={this.doLogin.bind(this)} params={this.state.params} />);
+            //     break;
         }
     }
 }

@@ -74,7 +74,7 @@ class SystemHeader extends React.Component {
                                    {/*style={[{height: 50, width: 80}]}></Image>*/}
                         {/*</View>*/}
 
-                        <TouchableOpacity style={[ styles.headerTouchableOpacity ]}>
+                        <TouchableOpacity style={[ styles.headerTouchableOpacity ]} onPress={()=>{ this.props.navigation.navigate('ticketList'); }}>
                             {/*<View style={[styles.headerActionContent]}>*/}
                                 {/*<Image source={require('../../assets/imgs/png/icons/chat-2.png')}*/}
                                        {/*style={[{aspectRatio: 1, width: 25, height: 25}]}/>*/}
