@@ -4,14 +4,15 @@ import {
     View,
     ImageBackground,
     TouchableOpacity,
-    ActivityIndicator,
     Dimensions,
     ScrollView,
-    Animated
+    Animated, Alert
 } from 'react-native';
 import styles from './top-explorer-styles';
+import LoginService from "../../../../services/login/login-service";
+import {withNavigation} from "react-navigation";
 
-export default class TopExplorer extends React.Component {
+ class TopExplorer extends React.Component {
 
     scrollX = new Animated.Value(0);
 
@@ -29,29 +30,38 @@ export default class TopExplorer extends React.Component {
         Dimensions.addEventListener("change", () => {
             this.setState({deviceWidth: Dimensions.get('window').width});
         });
+
+        LoginService.getDestaques().then((response) => {
+
+            this.setState({destaques: response.data})
+
+            // console.log(this.state.empresaProdutos)
+
+        }).catch(error => {
+
+            this.setState({
+                loading: false
+            });
+
+            Alert.alert(
+                'Erro',
+                'Ocorreu um erro ao se comunicar com o servidor. Por favor, tente novamente mais tarde.' + error,
+                [
+                    {text: 'OK'},
+                ],
+                {cancelable: false}
+            );
+
+        });
     }
 
     componentDidMount(){
         this.setState({
-            destaques: [{
-                id: 1,
-                imagem: 'https://d2mf6a0uls9pip.cloudfront.net/uploads/perfil/big/2018/10/24/5bd0a1120f720.jpeg',
-                marca: 'M I L A L A I',
-            },{
-                id: 2,
-                imagem: 'http://www.sabrinadalmolin.com/wp-content/uploads/2017/12/Fres-Break-AMARO15-1080x675.jpg',
-                marca: 'AMARO',
-            },{
-                id: 3,
-                imagem: 'https://vanduarte.com.br/wp-content/uploads/2018/02/AMARO-look-parka-vermelha-sandalia-e-top-xadrez-principe-de-galles-Moda-R%C3%A1pida-Fashion-Acess%C3%ADvel-Tend%C3%AAncias-Inverno-2018-AMARO-FASHION-Blog-VanDuarte-1-1.jpg',
-                marca: 'PAPAYA',
-            },{
-                id: 4,
-                imagem: 'https://static.glamurama.uol.com.br/2014/11/AMARO-BEACHWEAR-5.jpg',
-                marca: 'MIIA',
-            }],
+            destaques: [],
             loading: false,
         });
+
+
     }
 
     openProfile(){
@@ -87,23 +97,30 @@ export default class TopExplorer extends React.Component {
 
                     {this.state.destaques.map((destaque) => (
 
-                        <View key={destaque.id}>
+                        <TouchableOpacity key={destaque.id} onPress={()=>{
+                            this.props.navigation.navigate('ProdutoProfile', {
+                                video_id: destaque
+                            });
+                        }}>
 
                             <View style={[styles.containerImagem, {width: this.state.deviceWidth}]}>
-                                <ImageBackground source={{uri: destaque.imagem}} style={styles.imagemBackground} ref="image" />
+                                <ImageBackground source={{uri: "http://ec2-18-231-116-5.sa-east-1.compute.amazonaws.com/StarriAD/uploads/" + destaque.nome_thumbnail}} style={styles.imagemBackground} ref="image" />
                             </View>
 
                             <View style={styles.infosBanner}>
 
                                 <View style={styles.infoLabel}>
                                     <Text style={styles.infoText}>
-                                        {destaque.marca}
+                                        {destaque.titulo}
+                                    </Text>
+                                    <Text style={styles.infoText}>
+                                        R${destaque.valor_desconto},00
                                     </Text>
                                 </View>
 
 
                             </View>
-                        </View>
+                        </TouchableOpacity>
                     ))}
                 </ScrollView>
 
@@ -132,3 +149,5 @@ export default class TopExplorer extends React.Component {
         );
     }
 }
+
+export default withNavigation(TopExplorer)

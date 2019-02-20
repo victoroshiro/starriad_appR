@@ -40,8 +40,17 @@ const LoginService = {
     pesquisarVideo(data) {
         return axios.post(API_URL_STAR + 'users/pesquisarVideo', data);
     },
+    denuncia(data) {
+        return axios.post(API_URL_STAR + 'users/denuncia', data);
+    },
+    indicar(data) {
+        return axios.post(API_URL_STAR + 'users/indicar', data);
+    },
     signout(){
         return axios.post(API_URL_STAR + 'routes/signout');
+    },
+    getDestaques(){
+        return axios.post(API_URL_STAR + 'users/get_destaque');
     }
 
 };

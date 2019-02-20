@@ -127,6 +127,19 @@ import {withNavigation} from "react-navigation";
                                         });
                                     }}>
                                         <Image style={styles.produtosImg} source={{uri: "http://ec2-18-231-116-5.sa-east-1.compute.amazonaws.com/StarriAD/uploads/" + produtos.nome_thumbnail}} />
+                                        <View style={styles.infosBanner}>
+
+                                            <View style={styles.infoLabel}>
+                                                <Text style={styles.infoText}>
+                                                    {produtos.titulo}
+                                                </Text>
+                                                <Text style={styles.infoText}>
+                                                    R${produtos.valor_desconto},00
+                                                </Text>
+                                            </View>
+
+
+                                        </View>
                                     </TouchableOpacity>
                                 ))}
                             </ScrollView>

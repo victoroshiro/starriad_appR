@@ -4,6 +4,7 @@ import {style} from "./ticketList-style";
 import LoginService from "../../services/login/login-service";
 import {withNavigation} from "react-navigation";
 import {styleLogin} from "../login/Login-styles";
+import styles from "../explorer/explorerComponents/body-explorer/body-explorer-styles";
 
 class ticketList extends React.Component {
 
@@ -69,42 +70,47 @@ class ticketList extends React.Component {
                 <View style={{justifyContent: 'center',
                     flexDirection: 'row',
                     width: "100%",
-                    height: 70}}>
+                    backgroundColor: "#002f49",
+                    height: 50}}>
                     <View style={{right: 100, top: 5, marginLeft: 5}}>
                         <TouchableOpacity onPress={() => {
                             this.props.navigation.goBack();
                         }}>
-                            <Image resizeMode={'contain'} style={{imgSeta: {
+                            <Image resizeMode={'contain'} style={{
                                     width: 22,
                                     height: 22,
-                                    tintColor: '#000',
-                                },}}
+                                    tintColor: '#fff',
+                                    marginTop: 8,
+                                }}
                                    source={require('../../assets/imgs/png/icons/caret-left.png')}/>
                         </TouchableOpacity>
                     </View>
                     <View>
-                        <Text style={{fontSize: 20,marginTop: 8}}>CUPONS</Text>
+                        <Text style={{fontSize: 20,marginTop: 8, color: "#fff"}}>CUPONS</Text>
                     </View>
 
                 </View>
-                <View>
-                    <View style={{flex: 1, flexDirection: 'row', width: "100%",  marginBottom: 30, borderBottom: 5, borderBottomColor: "#000"}}>
-                        <View style={{width: "50%", alignItems: "center", color: "#000"}}>
-                            <Text style={{fontSize: 20}}>EMPRESA</Text>
-                        </View>
-                        <View style={{width: "50%", alignItems: "center", color: "#000"}}>
-                            <Text style={{fontSize: 20}}>VALOR</Text>
-                        </View>
-                    </View>
+                <View style={{backgroundColor: "#225c72", height: "100%", color: "#fff"}}>
+                    {/*<View style={{flex: 1, flexDirection: 'row', width: "100%",  marginBottom: 30, borderBottom: 5, borderBottomColor: "#fff", color: "#fff"}}>*/}
+                        {/*<View style={{width: "50%", alignItems: "center", color: "#fff"}}>*/}
+                            {/*<Text style={{fontSize: 20, color: "#fff"}}>EMPRESA</Text>*/}
+                        {/*</View>*/}
+                        {/*<View style={{width: "50%", alignItems: "center", color: "#fff"}}>*/}
+                            {/*<Text style={{fontSize: 20, color: "#fff"}}>VALOR</Text>*/}
+                        {/*</View>*/}
+                    {/*</View>*/}
                     {this.state.cupons.map(cupom => (
 
-                    <View key={cupom.id} style={{width: "100%", marginTop: 20, marginBottom: 20, borderBottom: 20, borderBottomColor: "#000", height: 50}}>
-                        <TouchableOpacity style={{width: "100%",flex: 1, flexDirection: 'row', zIndex: 99999999}} onPress={()=>{this.activeCupom(cupom)}}>
-                            <View style={{width: "50%", alignItems: "center"}}>
-                                <Text>{cupom.nome}</Text>
+                    <View key={cupom.id} style={{width: "100%", marginTop: 20, marginBottom: 10, borderBottomWidth: 1, borderBottomColor: "#fff", height: 60}}>
+                        <TouchableOpacity style={{width: "100%",flex: 1, flexDirection: 'row', zIndex: 99999999, color: "#fff", paddingBottom: 10}} onPress={()=>{this.activeCupom(cupom)}}>
+                            <View style={{width: "30%", alignItems: "center", color: "#fff"}}>
+                                <Image style={{height: "100%", width: 50}} source={{uri: "http://ec2-18-231-116-5.sa-east-1.compute.amazonaws.com/StarriAD/uploads/" + cupom.nome_thumbnail}} />
                             </View>
-                            <View style={{width: "50%", alignItems: "center"}}>
-                                <Text>R${cupom.valor},00</Text>
+                            <View style={{width: "30%", alignItems: "center", justifyContent: "center"}}>
+                                <Text style={{color: "#fff", fontSize: 15}}>{cupom.nome}</Text>
+                            </View>
+                            <View style={{width: "30%", alignItems: "center", justifyContent: "center"}}>
+                                <Text style={{color: "#fff"}}>Valor: R${cupom.valor}</Text>
                             </View>
                         </TouchableOpacity>
                     </View>

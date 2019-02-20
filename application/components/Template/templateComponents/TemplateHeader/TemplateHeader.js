@@ -326,9 +326,16 @@ class TemplateHeader extends React.Component {
 
 
                             <View style={[ styles.template_header_menu_option ]}>
-                                <TouchableOpacity style={[ styles.template_header_menu_option_touchable ]}>
+                                <TouchableOpacity style={[ styles.template_header_menu_option_touchable ]} onPress={()=>{this.props.navigation.navigate('ticketList');}}>
                                     <Text style={[ styles.template_header_menu_option_text ]}>
                                         Meus Cupons
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+                            <View style={[ styles.template_header_menu_option ]}>
+                                <TouchableOpacity style={[ styles.template_header_menu_option_touchable ]} onPress={()=>{this.props.navigation.navigate('indicar');}}>
+                                    <Text style={[ styles.template_header_menu_option_text ]}>
+                                        Indicar Amigos
                                     </Text>
                                 </TouchableOpacity>
                             </View>

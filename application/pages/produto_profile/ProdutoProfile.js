@@ -1,8 +1,18 @@
 import React from 'react';
-import {View, Dimensions, TouchableOpacity, Text, ScrollView, Image, Alert, AsyncStorage} from 'react-native';
+import {
+    View,
+    Dimensions,
+    TouchableOpacity,
+    Text,
+    ScrollView,
+    Image,
+    Alert,
+    AsyncStorage,
+    TextInput,
+    Modal
+} from 'react-native';
 import {withNavigation} from "react-navigation";
 import VideoPlayer from 'react-native-video-controls';
-import {styleLogin} from "../login/Login-styles";
 import LoginService from "../../services/login/login-service";
 
 class ProdutoProfile extends React.Component {
@@ -18,7 +28,9 @@ class ProdutoProfile extends React.Component {
             width: width,
             videoEnd: false,
             pause: false,
-            user_id: false
+            user_id: false,
+            modalVisible: false,
+            textDenuncia: ""
         }
 
         console.log(this.state.video_id)
@@ -33,7 +45,6 @@ class ProdutoProfile extends React.Component {
 
             let user_logged = JSON.parse(value)
 
-            console.log(user_logged)
 
             if(user_logged !== undefined && user_logged != null && user_logged !== '' && user_logged && user_logged.success !== false){
 
@@ -90,21 +101,35 @@ class ProdutoProfile extends React.Component {
 
         return(
             <ScrollView style={{width:"100%", backgroundColor: "#000", height: "100%"}}>
-                <View style={styleLogin.headerContainer}>
 
-                <View style={styleLogin.setaContainer}>
-                    <TouchableOpacity onPress={() => {
-                        this.props.navigation.goBack();
-                    }}>
-                        <Image resizeMode={'contain'} style={{
-                                width: 22,
-                                height: 22,
-                                tintColor: '#fff'
-                            }}
-                               source={require('../../assets/imgs/png/icons/caret-left.png')}/>
-                    </TouchableOpacity>
+                <View style={{justifyContent: 'center',
+                    flexDirection: 'row',
+                    width: "100%",
+                    height: 70}}>
+                    <View style={{right: 100, top: 5, marginLeft: 5}}>
+                        <TouchableOpacity onPress={() => {
+                            this.props.navigation.goBack();
+                        }}>
+                            <Image resizeMode={'contain'} style={{
+                                    width: 22,
+                                    height: 22,
+                                    tintColor: '#fff',
+                                }}
+                                   source={require('../../assets/imgs/png/icons/caret-left.png')}/>
+                        </TouchableOpacity>
+                    </View>
+                    <View>
+                        <Text style={{fontSize: 20,marginTop: 8, color: "#fff"}}>{this.state.video_id.titulo}</Text>
+                    </View>
+
                 </View>
-                <View><Text style={style.textTitulo}>{this.state.video_id.titulo} </Text></View>
+                <View style={{flex: 1, flexDirection: 'row', width: "100%",  marginBottom: 30, borderBottom: 5, borderBottomColor: "#000"}}>
+                    <TouchableOpacity onPress={()=>{this.setModalVisible(true)}} style={{width: "50%", alignItems: "center", color: "#fff"}}>
+                        <Text style={{fontSize: 20, color: "#fff"}}>Denunciar</Text>
+                    </TouchableOpacity>
+                    <View style={{width: "50%", alignItems: "center", color: "#000"}}>
+                        <Text style={{fontSize: 20, color: "#fff"}}>Compartilhar</Text>
+                    </View>
                 </View>
                 <View style={{width: "100%", height: this.state.height / 2}}>
                     <VideoPlayer source={{uri: "http://ec2-18-231-116-5.sa-east-1.compute.amazonaws.com/StarriAD/uploads/" + this.state.video_id.nome_arquivo}}
@@ -148,8 +173,76 @@ class ProdutoProfile extends React.Component {
                     <View><Text style={style.textCupom}>Valor do Cupom: R${this.state.video_id.valor_desconto}</Text></View>
                 </View>
                 }
+
+                <Modal
+                    animationType="slide"
+                    transparent={false}
+                    visible={this.state.modalVisible}
+                    onRequestClose={() => {
+                        Alert.alert('Modal has been closed.');
+                    }}>
+                    <View style={{marginTop: 22}}>
+                        <View>
+                            <View style={{justifyContent: 'center',
+                                flexDirection: 'row',
+                                width: "100%",
+                                height: 70}}>
+                                <View style={{right: 100, top: 5, marginLeft: 5}}>
+                                    <TouchableOpacity onPress={() => {
+                                        this.setModalVisible(false);
+
+                                    }}>
+                                        <Image resizeMode={'contain'} style={{
+                                            width: 22,
+                                            height: 22,
+                                            tintColor: '#000',
+                                        }}
+                                               source={require('../../assets/imgs/png/icons/caret-left.png')}/>
+                                    </TouchableOpacity>
+                                </View>
+                                <View style={{marginBottom: 20}}>
+                                    <Text style={{fontSize: 20,marginTop: 8, color: "#000", textAlign: "center"}}>Denunciar</Text>
+                                </View>
+
+                            </View>
+                            <View>
+                                <Text>Você esta denunciando a campanha {this.state.video_id.titulo}</Text>
+                            </View>
+
+                            <View style={{marginTop: 20}}>
+                                <TextInput
+                                    style={{
+                                        backgroundColor: '#fff',
+                                        height: 45,
+                                        fontSize: 18,
+                                        borderColor: "#000",
+                                        borderWidth: 2,
+                                        borderRadius: 1,
+                                        paddingLeft: 10
+                                    }}
+                                    secureTextEntry={this.state.hidePass}
+                                    onChangeText={(text) => {
+                                        this.state.textDenuncia = text;
+                                        this.setState({textDenuncia: this.state.textDenuncia})
+                                    }}
+                                    underlineColorAndroid='#FFF'
+                                    placeholder="Motivo da denuncia"
+                                    placeholderTextColor="#a0a7ad"
+                                />
+                                <TouchableOpacity style={{marginTop: 20, width: "100%",}} onPress={()=>{this.denunciar()}}>
+                                    <Text style={{textAlign: "center", fontSize: 25}}>Enviar</Text>
+                                </TouchableOpacity>
+
+                            </View>
+                        </View>
+                    </View>
+                </Modal>
             </ScrollView>
         );
+    }
+
+    setModalVisible(visible) {
+        this.setState({modalVisible: visible});
     }
 
     onBuffer(){
@@ -223,6 +316,32 @@ class ProdutoProfile extends React.Component {
             this.videoPlayer.player.ref.seek(0)
 
         }
+    }
+
+    denunciar() {
+
+        LoginService.denuncia({titulo: this.state.video_id.titulo, username: this.state.user_id, text: this.state.textDenuncia}).then((response) => {
+
+            this.setModalVisible(false);
+
+        }).catch(error => {
+
+            this.setState({
+                loading: false
+            });
+
+            Alert.alert(
+                'Erro',
+                error.toString() ,
+                [
+                    {text: 'OK'},
+                ],
+                {cancelable: false}
+            );
+
+        });
+
+
     }
 
 };

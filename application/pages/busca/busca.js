@@ -12,9 +12,7 @@ import {
     TextInput
 } from 'react-native';
 import {withNavigation} from "react-navigation";
-import {styleLogin} from "../login/Login-styles";
 import LoginService from "../../services/login/login-service";
-import {styleCadastro} from "../login/loginComponents/cadastro/Cadastro-styles";
 
 class busca extends React.Component {
 
@@ -26,7 +24,9 @@ class busca extends React.Component {
         this.state = {
             height: height,
             width: width,
-            busca: [],
+            busca: [
+
+            ],
             textBusca: ""
         }
 
@@ -37,19 +37,23 @@ class busca extends React.Component {
     render() {
 
         return (
-            <View>
+            <View style={{backgroundColor: "#225c72", height: "100%"}}>
                 <View style={{
                     width: "100%",
-                    height: 70}}>
+                    backgroundColor: "#002f49",
+                    height: 50
+                }}>
                     <View style={{ top: 5}}>
                         <TouchableOpacity onPress={() => {
                             this.props.navigation.goBack();
                         }}>
-                            <Image resizeMode={'contain'} style={{imgSeta: {
+                            <Image resizeMode={'contain'} style={{
                                     width: 22,
                                     height: 22,
-                                    tintColor: '#000',
-                                },}}
+                                    tintColor: '#fff',
+                                    marginTop: 8,
+                                    marginLeft: 5
+                                }}
                                    source={require('../../assets/imgs/png/icons/caret-left.png')}/>
                         </TouchableOpacity>
                     </View>
@@ -61,9 +65,10 @@ class busca extends React.Component {
                 <View>
                     <View style={{
                         marginBottom: 5,
-                        flex: 3,
+                        flex: 1,
                         flexDirection: "row",
-                        width: "100%"
+                        width: "100%",
+                        margin: 10
                     }}>
                         <TextInput
                             style={{
@@ -72,7 +77,8 @@ class busca extends React.Component {
                                 fontSize: 18,
                                 borderRadius: 1,
                                 paddingLeft: 10,
-                                width: "80%"
+                                width: "80%",
+                                zIndex: 1
                             }}
                             maxLength={30}
                             onChangeText={(text) => {
@@ -83,8 +89,10 @@ class busca extends React.Component {
                             placeholder="Busca"
                             placeholderTextColor="#a0a7ad"
                         />
-                        <TouchableOpacity style={{width: "20%", alignItems: "center"}} onPress={()=>{this.pesquisar(this.state.textBusca)}}>
-                            <Text style={{ color: "#ff", fontSize: 20, justifySelf: "center", height: 45}}>OK</Text>
+                        <TouchableOpacity style={{width: "20%", alignItems: "center", zIndex: 9999999, marginTop: 9, height: 45}} onPress={()=>{this.pesquisar(this.state.textBusca)}}>
+                            <View styles={{width: "100%", height: 45}}>
+                                <Text style={{color: "#fff", fontSize: 20, justifySelf: "center"}}>OK</Text>
+                            </View>
                         </TouchableOpacity>
 
                     </View>
@@ -96,19 +104,28 @@ class busca extends React.Component {
                             {/*<Text style={{fontSize: 20}}>VALOR</Text>*/}
                         {/*</View>*/}
                     {/*</View>*/}
+                    <ScrollView style={{marginTop: 65}}>
                     {this.state.busca.map(busca => (
 
-                        <View key={busca.id} style={{width: "100%", marginTop: 20, marginBottom: 20, borderBottom: 20, borderBottomColor: "#000", height: 50}}>
-                            <TouchableOpacity style={{width: "100%",flex: 1, flexDirection: 'row', zIndex: 99999999}} onPress={()=>{}}>
-                                <View style={{width: "50%", alignItems: "center"}}>
-                                    <Text>{busca.nome}</Text>
+                        <View key={busca.id} style={{width: "100%", marginTop: 15, borderBottomWidth: 1, borderBottomColor: "#fff", height: 60}}>
+                            <TouchableOpacity style={{width: "100%",flex: 1, flexDirection: 'row', paddingBottom: 10}} onPress={()=>{
+                                this.props.navigation.navigate('ProdutoProfile', {
+                                    video_id: busca
+                                });
+                            }}>
+                                <View style={{width: "30%", alignItems: "center", color: "#fff"}}>
+                                    <Image style={{height: "100%", width: 50}} source={{uri: "http://ec2-18-231-116-5.sa-east-1.compute.amazonaws.com/StarriAD/uploads/" + busca.nome_thumbnail}} />
                                 </View>
-                                <View style={{width: "50%", alignItems: "center"}}>
-                                    <Text>R${busca.valor},00</Text>
+                                <View style={{width: "30%", alignItems: "center", justifyContent: "center"}}>
+                                    <Text style={{color: "#fff"}}>{busca.nome}</Text>
+                                </View>
+                                <View style={{width: "30%", alignItems: "center", justifyContent: "center"}}>
+                                    <Text style={{color: "#fff"}}>Valor: R${busca.valor_desconto}</Text>
                                 </View>
                             </TouchableOpacity>
                         </View>
                     ))}
+                    </ScrollView>
 
                 </View>
 
@@ -117,9 +134,22 @@ class busca extends React.Component {
     }
 
     pesquisar(text){
+
         LoginService.pesquisarVideo({text: text}).then((response) => {
 
+            this.setState({busca: response.data})
 
+            // Alert.alert(
+            //     'teste',
+            //     JSON.stringify(response.data),
+            //
+            // );
+        }).catch((e)=>{
+            Alert.alert(
+                'ERRO',
+                e.toString(),
+
+            );
         })
         }
 

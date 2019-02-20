@@ -137,7 +137,30 @@ const stylesBodyExplorer = StyleSheet.create({
     produtosImg: {
         width: '100%',
         height: '100%',
-    }
+    },
+    // Controle o tamanho do container das informações do banner
+    infosBanner: {
+        height: '100%',
+        width: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'absolute',
+    },
+    // Container que engloba o nome da empresa no banner
+    infoLabel: {
+        height: 20,
+        width: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+
+    // Nome da empresa no banner
+    infoText: {
+        fontSize: 25,
+        color: '#fff',
+        fontWeight: 'bold',
+    },
+
 
 });
 
