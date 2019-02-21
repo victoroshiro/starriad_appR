@@ -37,8 +37,20 @@ const LoginService = {
     useCupons(data) {
         return axios.post(API_URL_STAR + 'users/use_tickets', data);
     },
+    getParticipo(data) {
+        return axios.post(API_URL_STAR + 'users/getParticipo', data);
+    },
     pesquisarVideo(data) {
         return axios.post(API_URL_STAR + 'users/pesquisarVideo', data);
+    },
+    participarPatrocinio(data) {
+        return axios.post(API_URL_STAR + 'users/participarPatrocinio', data);
+    },
+    userDataRanking(data) {
+        return axios.post(API_URL_STAR + 'users/userDataRanking', data);
+    },
+    getPatrocinio() {
+        return axios.post(API_URL_STAR + 'users/getPatrocinio');
     },
     denuncia(data) {
         return axios.post(API_URL_STAR + 'users/denuncia', data);
