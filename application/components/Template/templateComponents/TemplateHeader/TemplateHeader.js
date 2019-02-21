@@ -333,6 +333,13 @@ class TemplateHeader extends React.Component {
                                 </TouchableOpacity>
                             </View>
                             <View style={[ styles.template_header_menu_option ]}>
+                                <TouchableOpacity style={[ styles.template_header_menu_option_touchable ]} onPress={()=>{this.props.navigation.navigate('patrocinio');}}>
+                                    <Text style={[ styles.template_header_menu_option_text ]}>
+                                        Patrocinio
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+                            <View style={[ styles.template_header_menu_option ]}>
                                 <TouchableOpacity style={[ styles.template_header_menu_option_touchable ]} onPress={()=>{this.props.navigation.navigate('indicar');}}>
                                     <Text style={[ styles.template_header_menu_option_text ]}>
                                         Indicar Amigos

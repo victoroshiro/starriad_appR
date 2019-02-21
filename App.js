@@ -6,7 +6,7 @@ import ProdutoProfile from "./application/pages/produto_profile/ProdutoProfile";
 import ticketList from "./application/pages/ticket/ticketList";
 import busca from "./application/pages/busca/busca";
 import indicar from "./application/pages/indicar/indicar";
-
+import patrocinio from "./application/pages/patrocinio/patrocinio";
 
 
 import Login from "./application/pages/login/Login";
@@ -34,6 +34,9 @@ export default createStackNavigator({
         },
         'indicar': {
             screen: indicar
+        },
+        'patrocinio': {
+            screen: patrocinio
         }
     },
     {
