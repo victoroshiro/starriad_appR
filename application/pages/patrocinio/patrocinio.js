@@ -72,7 +72,7 @@ class patrocinio extends React.Component {
                     })
 
 
-                    LoginService.userDataRanking({id:  user_logged.id[0].id}).then((response) => {
+                    LoginService.userDataRanking({id:  user_logged.id[0].id, patrocinio_id: this.state.patrocinio.patrocinio_id}).then((response) => {
 
                         this.setState({user: response.data.user})
                         this.setState({ranking: response.data.ranking})
@@ -205,7 +205,7 @@ class patrocinio extends React.Component {
 
             this.setState({participando: 1})
 
-            LoginService.userDataRanking({id:  this.state.user_id}).then((response) => {
+            LoginService.userDataRanking({id:  this.state.user_id, patrocinio_id: this.state.patrocinio.patrocinio_id}).then((response) => {
 
                 this.setState({user: response.data.user})
                 this.setState({ranking: response.data.ranking})
