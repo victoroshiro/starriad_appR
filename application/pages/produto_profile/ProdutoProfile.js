@@ -124,12 +124,9 @@ class ProdutoProfile extends React.Component {
 
                 </View>
                 <View style={{flex: 1, flexDirection: 'row', width: "100%",  marginBottom: 30, borderBottom: 5, borderBottomColor: "#000"}}>
-                    <TouchableOpacity onPress={()=>{this.setModalVisible(true)}} style={{width: "50%", alignItems: "center", color: "#fff"}}>
+                    <TouchableOpacity onPress={()=>{this.setModalVisible(true)}} style={{width: "100%", alignItems: "center", color: "#fff"}}>
                         <Text style={{fontSize: 20, color: "#fff"}}>Denunciar</Text>
                     </TouchableOpacity>
-                    <View style={{width: "50%", alignItems: "center", color: "#000"}}>
-                        <Text style={{fontSize: 20, color: "#fff"}}>Compartilhar</Text>
-                    </View>
                 </View>
                 <View style={{width: "100%", height: this.state.height / 2}}>
                     <VideoPlayer source={{uri: "http://ec2-18-231-116-5.sa-east-1.compute.amazonaws.com/StarriAD/uploads/" + this.state.video_id.nome_arquivo}}

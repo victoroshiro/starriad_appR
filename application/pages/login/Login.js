@@ -40,7 +40,7 @@ export default class Login extends React.Component {
 
             if(user_logged !== undefined && user_logged != null && user_logged !== '' && user_logged && user_logged.success !== false){
                 // this.props.callbackLogin('Main');
-                this.props.navigation.navigate('Main');
+                    this.props.navigation.navigate('Main');
             }
         }).done();
 

@@ -56,6 +56,7 @@ class patrocinio extends React.Component {
 
                 LoginService.getPatrocinio().then((response) => {
 
+
                     this.setState({patrocinio: response.data[0]})
 
                     LoginService.getParticipo({user_id:  user_logged.id[0].id, patrocinio_id: this.state.patrocinio.patrocinio_id}).then((response) => {
@@ -65,14 +66,16 @@ class patrocinio extends React.Component {
 
                     }).catch((e)=>{
                         Alert.alert(
-                            'ERRO',
+                            'ERRO1',
                             e.toString(),
 
                         );
+                        console.log(e)
                     })
 
 
                     LoginService.userDataRanking({id:  user_logged.id[0].id, patrocinio_id: this.state.patrocinio.patrocinio_id}).then((response) => {
+                        console.log(response.data)
 
                         this.setState({user: response.data.user})
                         this.setState({ranking: response.data.ranking})
@@ -80,18 +83,22 @@ class patrocinio extends React.Component {
 
                     }).catch((e)=>{
                         Alert.alert(
-                            'ERRO',
+                            'ERRO2',
                             e.toString(),
 
                         );
+                        console.log(e)
+
                     })
 
                 }).catch((e)=>{
                     Alert.alert(
-                        'ERRO',
+                        'ERRO3',
                         e.toString(),
 
                     );
+                    console.log(e)
+
                 });
 
             }
@@ -132,7 +139,7 @@ class patrocinio extends React.Component {
                 <ScrollView >
                 <View>
                     <View style={{width: "100%", alignItems: "center", color: "#fff"}}>
-                        <Image style={{height: 200, width: "100%"}} source={{uri: "http://192.168.0.5/StarriAD/uploads/" + this.state.patrocinio.file}} />
+                        <Image style={{height: 200, width: "100%"}} source={{uri: "http://ec2-18-231-116-5.sa-east-1.compute.amazonaws.com/StarriAD/uploads/" + this.state.patrocinio.file}} />
                     </View>
                     <View>
                         <Text style={{color: "#fff", fontSize: 30, textAlign: "center"}}>{this.state.patrocinio.nome}</Text>
@@ -210,11 +217,6 @@ class patrocinio extends React.Component {
                 this.setState({user: response.data.user})
                 this.setState({ranking: response.data.ranking})
 
-                Alert.alert(
-                    'teste',
-                    JSON.stringify(response.data),
-
-                );
             }).catch((e)=>{
                 Alert.alert(
                     'ERRO',

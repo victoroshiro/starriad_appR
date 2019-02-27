@@ -5,16 +5,16 @@ import {
     TouchableOpacity,
     Dimensions,
     ScrollView,
-    TextInput, Alert, Image, Modal,
+    TextInput, Alert, Image, Modal, AsyncStorage,
 
 } from 'react-native';
 import { CheckBox } from 'react-native-elements'
 import {styleCadastro} from '../Cadastro-styles'
 import {style} from '../../../../slides/SlideScreen-styles';
 import LoginService from "../../../../../services/login/login-service";
+import { withNavigation } from 'react-navigation';
 
-
-export default class Passo1 extends React.Component {
+class Passo1 extends React.Component {
     constructor(props) {
         super(props);
 
@@ -270,9 +270,28 @@ export default class Passo1 extends React.Component {
 
             LoginService.cadastrar(this.state.user).then((response) => {
 
+                console.log(response.data)
+
                 if (response.data !== false) {
 
-                    this.props.navigation.navigate('Main');
+                    // this.props.navigation.navigate('Main');
+
+                    var _storeData = async () => {
+                        try {
+                            await AsyncStorage.setItem('@starriad:userdata', JSON.stringify({id:response.data})).then((value) => {
+                                console.log(value)
+
+                                this.props.navigation.navigate('Main');
+
+                            });
+
+                        } catch (error) {
+                            console.log(error)
+                        }
+                    }
+
+                    _storeData()
+
                     this.setState({
                         loading: false
                     });
@@ -299,5 +318,7 @@ export default class Passo1 extends React.Component {
 
 
 }
+
+export default withNavigation(Passo1);
 
 
