@@ -9,11 +9,13 @@ import {
     Alert,
     AsyncStorage,
     TextInput,
-    Modal
+    Modal, ActivityIndicator
 } from 'react-native';
 import {withNavigation} from "react-navigation";
 import VideoPlayer from 'react-native-video-controls';
 import LoginService from "../../services/login/login-service";
+import {style} from "../slides/SlideScreen-styles";
+import {styleCadastro} from "../login/loginComponents/cadastro/Cadastro-styles";
 
 class ProdutoProfile extends React.Component {
 
@@ -30,6 +32,7 @@ class ProdutoProfile extends React.Component {
             pause: false,
             user_id: false,
             modalVisible: false,
+            loading: false,
             textDenuncia: ""
         }
 
@@ -119,7 +122,7 @@ class ProdutoProfile extends React.Component {
                         </TouchableOpacity>
                     </View>
                     <View>
-                        <Text style={{fontSize: 20,marginTop: 8, color: "#fff"}}>{this.state.video_id.titulo}</Text>
+                        <Text style={{fontSize: 15,marginTop: 8, color: "#fff"}}>{this.state.video_id.titulo}</Text>
                     </View>
 
                 </View>
@@ -131,17 +134,18 @@ class ProdutoProfile extends React.Component {
                 <View style={{width: "100%", height: this.state.height / 2}}>
                     <VideoPlayer source={{uri: "http://ec2-18-231-116-5.sa-east-1.compute.amazonaws.com/StarriAD/uploads/" + this.state.video_id.nome_arquivo}}
                                  ref={ref => this.videoPlayer = ref}
-                           onEnd={this.videoEnd}
-                           resizeMode={"contain"}
+                                 onEnd={this.videoEnd}
+                                 resizeMode={"cover"}
                                  disableSeekbar={true}
                                  disableBack={true}
-                           repeat={false}
-                           style={{
-                               aspectRatio: 1,
-                               width: "100%",
-                               height: "100%",
-                               alignSelf: "center",
-                               }}
+                                 repeat={false}
+                                 fullscreen={true}
+                                 style={{
+                                           aspectRatio: 1,
+                                           width: "100%",
+                                           height: "100%",
+                                           alignSelf: "center",
+                                       }}
 
                     />
                 </View>
@@ -226,9 +230,16 @@ class ProdutoProfile extends React.Component {
                                     placeholder="Motivo da denuncia"
                                     placeholderTextColor="#a0a7ad"
                                 />
+                                { !this.state.loading &&
                                 <TouchableOpacity style={{marginTop: 20, width: "100%",}} onPress={()=>{this.denunciar()}}>
                                     <Text style={{textAlign: "center", fontSize: 25}}>Enviar</Text>
                                 </TouchableOpacity>
+                                }
+
+                                { this.state.loading &&
+                                <ActivityIndicator size="large" color="#fff" />
+                                }
+
 
                             </View>
                         </View>
@@ -317,7 +328,15 @@ class ProdutoProfile extends React.Component {
 
     denunciar() {
 
+        this.setState({
+            loading: true
+        });
+
         LoginService.denuncia({titulo: this.state.video_id.titulo, username: this.state.user_id, text: this.state.textDenuncia}).then((response) => {
+
+            this.setState({
+                loading: false
+            });
 
             this.setModalVisible(false);
 

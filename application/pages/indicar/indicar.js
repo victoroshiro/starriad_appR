@@ -9,7 +9,7 @@ import {
     Alert,
     AsyncStorage,
     Modal,
-    TextInput
+    TextInput, ActivityIndicator
 } from 'react-native';
 import {withNavigation} from "react-navigation";
 import LoginService from "../../services/login/login-service";
@@ -124,9 +124,17 @@ class indicar extends React.Component {
                             placeholder="Telefone"
                             placeholderTextColor="#a0a7ad"
                         />
+
+
+                        { !this.state.loading &&
                         <TouchableOpacity style={{marginTop: 20, width: "100%",}} onPress={()=>{this.indicar()}}>
                             <Text style={{textAlign: "center", fontSize: 25, color: "#fff"}}>Enviar</Text>
                         </TouchableOpacity>
+                        }
+
+                        { this.state.loading &&
+                        <ActivityIndicator size="large" color="#fff" />
+                        }
 
                     </View>
                 </View>
@@ -136,7 +144,16 @@ class indicar extends React.Component {
 
 
     indicar(){
+        this.setState({
+            loading: true
+        });
+
         LoginService.indicar({numero: this.state.numeroIndicacao, nome: this.state.nomeIndicacao, user_id: this.state.user_id}).then((response) => {
+
+            this.setState({
+                loading: false
+            });
+
 
             this.setState({numeroIndicacao: ""})
             this.setState({nomeIndicacao: ""})

@@ -37,12 +37,6 @@ class patrocinio extends React.Component {
 
         this.checkLog()
 
-
-
-
-
-
-
     }
     checkLog = async () => {
 
@@ -57,9 +51,10 @@ class patrocinio extends React.Component {
                 LoginService.getPatrocinio().then((response) => {
 
 
-                    this.setState({patrocinio: response.data[0]})
+                    if(response.data.length > 0)
+                        this.setState({patrocinio: response.data})
 
-                    LoginService.getParticipo({user_id:  user_logged.id[0].id, patrocinio_id: this.state.patrocinio.patrocinio_id}).then((response) => {
+                    LoginService.getParticipo({user_id:  user_logged.id[0].id, patrocinio_id: ((response.data.length > 0) ? response.data[0].patrocinio_id : null)}).then((response) => {
 
                         this.setState({participando: response.data})
 
@@ -74,7 +69,7 @@ class patrocinio extends React.Component {
                     })
 
 
-                    LoginService.userDataRanking({id:  user_logged.id[0].id, patrocinio_id: this.state.patrocinio.patrocinio_id}).then((response) => {
+                    LoginService.userDataRanking({id:  user_logged.id[0].id, patrocinio_id: ((response.data.length > 0) ? response.data[0].patrocinio_id : null)}).then((response) => {
                         console.log(response.data)
 
                         this.setState({user: response.data.user})
@@ -82,21 +77,13 @@ class patrocinio extends React.Component {
 
 
                     }).catch((e)=>{
-                        Alert.alert(
-                            'ERRO2',
-                            e.toString(),
 
-                        );
                         console.log(e)
 
                     })
 
                 }).catch((e)=>{
-                    Alert.alert(
-                        'ERRO3',
-                        e.toString(),
 
-                    );
                     console.log(e)
 
                 });
@@ -137,18 +124,19 @@ class patrocinio extends React.Component {
                 </View>
 
                 <ScrollView >
+                    { (this.state.patrocinio.length > 0) &&
                 <View>
                     <View style={{width: "100%", alignItems: "center", color: "#fff"}}>
-                        <Image style={{height: 200, width: "100%"}} source={{uri: "http://ec2-18-231-116-5.sa-east-1.compute.amazonaws.com/StarriAD/uploads/" + this.state.patrocinio.file}} />
+                        <Image style={{height: 200, width: "100%"}} source={{uri: "http://ec2-18-231-116-5.sa-east-1.compute.amazonaws.com/StarriAD/uploads/" + this.state.patrocinio[0].file}} />
                     </View>
                     <View>
-                        <Text style={{color: "#fff", fontSize: 30, textAlign: "center"}}>{this.state.patrocinio.nome}</Text>
+                        <Text style={{color: "#fff", fontSize: 30, textAlign: "center"}}>{this.state.patrocinio[0].nome}</Text>
                     </View>
                     <View>
-                        <Text style={{color: "#fff", margin: 10}}>Descrição: {this.state.patrocinio.descricao}</Text>
+                        <Text style={{color: "#fff", margin: 10}}>Descrição: {this.state.patrocinio[0].descricao}</Text>
                     </View>
                     <View>
-                        <Text style={{color: "#fff", margin: 10}}>Encerramento: {this.state.patrocinio.data_encerramento}</Text>
+                        <Text style={{color: "#fff", margin: 10}}>Encerramento: {this.state.patrocinio[0].data_encerramento}</Text>
                     </View>
 
 
@@ -188,6 +176,10 @@ class patrocinio extends React.Component {
                                 </View>
                             </View>
                         ))}
+
+                        <View style={{width: "100%", marginTop: 20, marginBottom: 10, height: 80}}>
+
+                        </View>
                     </View>
                     </View>
 
@@ -196,6 +188,10 @@ class patrocinio extends React.Component {
                     }
 
                 </View>
+                    }
+                    {(this.state.patrocinio.length === 0) &&
+                    <Text style={{fontSize: 20,marginTop: 8, color: "#fff"}}>Não temos nenhum patrocinio no momento</Text>
+                    }
 
 
 
